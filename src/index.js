@@ -91,6 +91,7 @@ async function renderImgCards(images) {
     Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
+    refs.loadMoreBtn.disabled = true;
   }
   const markup = images
     .map(img => {
