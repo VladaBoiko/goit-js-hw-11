@@ -14,6 +14,9 @@ const refs = {
   submitBtn: document.querySelector('#submit'),
   input: document.querySelector('input'),
 };
+refs.form.addEventListener('submit', formSubmit);
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
+refs.input.addEventListener('input', submitButton);
 refs.loadMoreBtn.disabled = true;
 let total = 0;
 
@@ -48,20 +51,8 @@ class GetImages {
     this.page += 1;
   }
 }
-
 const newImgService = new GetImages();
 
-refs.form.addEventListener('submit', formSubmit);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
-refs.input.addEventListener('input', submitButton);
-
-cardBox.addEventListener('click', evt => {
-  evt.preventDefault();
-});
-const galleryLarge = new SimpleLightbox('.photo-card a');
-galleryLarge.on('show.simplelightbox', () => {
-  galleryLarge.defaultOptions.captionDelay = 250;
-});
 function formSubmit(evt) {
   refs.loadMoreBtn.disabled = true;
   evt.preventDefault();
@@ -69,12 +60,12 @@ function formSubmit(evt) {
   newImgService.query = searchQuery.value;
   newImgService.resetPage();
   newImgService.getImages().then(data => renderImgCards(data.hits));
+  // window.addEventListener('scroll', scrollWindow);
 }
 
 function onLoadMore() {
   newImgService.incrementPage();
   newImgService.getImages().then(data => renderImgCards(data.hits));
-  galleryLarge.refresh();
 }
 function submitButton(evt) {
   if (evt.currentTarget.value) {
@@ -127,8 +118,18 @@ async function renderImgCards(images) {
   if (newImgService.page !== 1) {
     cardBox.insertAdjacentHTML('beforeend', markup);
   }
+  modalListener();
 }
-
+function modalListener() {
+  let galleryLarge = new SimpleLightbox('.photo-card a');
+  cardBox.addEventListener('click', evt => {
+    evt.preventDefault();
+    galleryLarge.on('show.simplelightbox', () => {
+      galleryLarge.defaultOptions.captionDelay = 250;
+    });
+    galleryLarge.refresh();
+  });
+}
 function notification(totalImg, totalHits) {
   if (newImgService.page > 1) {
     Notify.success(`Hooray! We found ${totalHits} images.`);
@@ -140,3 +141,14 @@ function notification(totalImg, totalHits) {
     );
   }
 }
+// window.addEventListener('scroll', scrollWindow);
+// function scrollWindow() {
+//   const { height: cardHeight } = document
+//     .querySelector('.main-gallery')
+//     .firstElementChild.getBoundingClientRect();
+//   console.log(getBoundingClientRect);
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: 'smooth',
+//   });
+// }
