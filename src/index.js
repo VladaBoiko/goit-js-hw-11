@@ -60,7 +60,6 @@ function formSubmit(evt) {
   newImgService.query = searchQuery.value;
   newImgService.resetPage();
   newImgService.getImages().then(data => renderImgCards(data.hits));
-  // window.addEventListener('scroll', scrollWindow);
 }
 
 function onLoadMore() {
@@ -127,8 +126,8 @@ function modalListener() {
     galleryLarge.on('show.simplelightbox', () => {
       galleryLarge.defaultOptions.captionDelay = 250;
     });
-    galleryLarge.refresh();
   });
+  galleryLarge.refresh();
 }
 function notification(totalImg, totalHits) {
   if (newImgService.page > 1) {
@@ -141,14 +140,3 @@ function notification(totalImg, totalHits) {
     );
   }
 }
-// window.addEventListener('scroll', scrollWindow);
-// function scrollWindow() {
-//   const { height: cardHeight } = document
-//     .querySelector('.main-gallery')
-//     .firstElementChild.getBoundingClientRect();
-//   console.log(getBoundingClientRect);
-//   window.scrollBy({
-//     top: cardHeight * 2,
-//     behavior: 'smooth',
-//   });
-// }
