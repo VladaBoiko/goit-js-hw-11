@@ -18,7 +18,7 @@ refs.form.addEventListener('submit', formSubmit);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 refs.input.addEventListener('input', submitButton);
 refs.loadMoreBtn.disabled = true;
-let total = 0;
+let total = 1;
 
 class GetImages {
   constructor() {
@@ -86,6 +86,7 @@ async function renderImgCards(images) {
   const markup = images
     .map(img => {
       total += 1;
+
       return ` 
       
       <div class="photo-card">
@@ -109,8 +110,12 @@ async function renderImgCards(images) {
   </div>`;
     })
     .join('');
+  console.log(total);
+  if (total === maxHits) {
+    refs.loadMoreBtn.disabled = true;
+  }
   notification(total, maxHits);
-
+  total = 1;
   if (newImgService.page === 1) {
     cardBox.innerHTML = markup;
   }
@@ -135,6 +140,7 @@ function notification(totalImg, totalHits) {
   }
 
   if (totalImg === totalHits) {
+    refs.loadMoreBtn.disabled = true;
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
