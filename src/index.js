@@ -77,8 +77,6 @@ async function renderImgCards(images) {
   const data = await newImgService.getImages();
   const allHits = data.hits.length;
   const maxHits = data.totalHits;
-  // console.log(allHits);
-  // console.log(maxHits);
 
   if (images.length === 0) {
     Notify.failure(
@@ -113,10 +111,14 @@ async function renderImgCards(images) {
   </div>`;
     })
     .join('');
-  console.log(total - 1);
-  if (total - 1 < 21) {
+  total -= 1;
+  if (total < 21) {
     refs.loadMoreBtn.disabled = true;
+    Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
   }
+
   notification(total, maxHits);
   total = 1;
   if (newImgService.page === 1) {
@@ -138,14 +140,7 @@ function modalListener() {
   galleryLarge.refresh();
 }
 function notification(totalImg, totalHits) {
-  if (newImgService.page > 1) {
+  if (newImgService.page > 1 && totalImg === 21) {
     Notify.success(`Hooray! We found ${totalHits} images.`);
-  }
-
-  if (totalImg === totalHits) {
-    // refs.loadMoreBtn.disabled = true;
-    Notify.failure(
-      "We're sorry, but you've reached the end of search results."
-    );
   }
 }
