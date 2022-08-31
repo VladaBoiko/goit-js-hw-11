@@ -61,9 +61,9 @@ button {
   align-self: flex-end;
   border: 1px solid black;
   img {
+    display: block;
     width: 350px;
     height: 250px;
-    display: block;
   }
   //   margin-bottom: 40px;
 }
@@ -77,6 +77,6 @@ button {
   display: flex;
   flex-direction: column;
   &:not(:last-child) {
-    margin-right: 25px;
+    margin-right: 20px;
   }
 }

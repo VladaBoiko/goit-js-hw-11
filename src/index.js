@@ -75,7 +75,10 @@ function submitButton(evt) {
 async function renderImgCards(images) {
   refs.loadMoreBtn.disabled = false;
   const data = await newImgService.getImages();
+  const allHits = data.hits.length;
   const maxHits = data.totalHits;
+  // console.log(allHits);
+  // console.log(maxHits);
 
   if (images.length === 0) {
     Notify.failure(
@@ -110,8 +113,8 @@ async function renderImgCards(images) {
   </div>`;
     })
     .join('');
-  console.log(total);
-  if (total === maxHits) {
+  console.log(total - 1);
+  if (total - 1 < 21) {
     refs.loadMoreBtn.disabled = true;
   }
   notification(total, maxHits);
@@ -140,7 +143,7 @@ function notification(totalImg, totalHits) {
   }
 
   if (totalImg === totalHits) {
-    refs.loadMoreBtn.disabled = true;
+    // refs.loadMoreBtn.disabled = true;
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
